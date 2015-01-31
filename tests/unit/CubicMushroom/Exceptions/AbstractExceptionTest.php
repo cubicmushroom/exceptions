@@ -2,6 +2,7 @@
 namespace CubicMushroom\Exceptions;
 
 use CubicMushroom\Exceptions\Exception\Defaults\MissingExceptionMessageException;
+use CubicMushroom\Exceptions\Exception\Property\SetterNotFoundException;
 
 class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -327,7 +328,23 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $builtException->setterCalls['camelCase']);
         $this->assertEquals(1, $builtException->setterCalls['publicWithSetter']);
     }
-    // Test invalid additional arguments
+
+
+    /**
+     * Test invalid additional arguments
+     *
+     * @expectedException \CubicMushroom\Exceptions\Exception\Property\SetterNotFoundException
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Setter for property  for 'doesNotExist' not found
+     */
+    public function testInvalidAdditionalArguments()
+    {
+        $additionalArgs = [
+            'doesNotExist' => 'This property does not exist',
+        ];
+
+        ExtendedAdditionalPropertiesException::build([], $additionalArgs);
+    }
 }
 
 
