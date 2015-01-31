@@ -1,0 +1,21 @@
+{
+    "name": "cubicmushroom/exceptions",
+    "description": "A basic, abstract exceptions class",
+    "require-dev": {
+        "codeception/codeception": "~2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Toby Griffiths",
+            "email": "toby@cubicmushroom.co.uk"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}
