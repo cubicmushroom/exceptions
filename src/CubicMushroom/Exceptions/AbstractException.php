@@ -22,6 +22,17 @@ class AbstractException extends \Exception
 {
 
     /**
+     * Builds an exception using build() and then throws it
+     *
+     * @throws AbstractException
+     */
+    final public static function raise(array $constructorArguments = array(), $additionalProperties = array())
+    {
+        throw self::build($constructorArguments, $additionalProperties);
+    }
+
+
+    /**
      * Helper method to prepare all but the most complex exceptions
      *
      * Pass in an array containing any or all of the following keys
@@ -45,7 +56,7 @@ class AbstractException extends \Exception
      * @throws \RuntimeException if no message can be prepared... There's no excuse for not including a useful message!
      *
      */
-    public static function build(array $constructorArguments = array(), $additionalProperties = array())
+    final public static function build(array $constructorArguments = array(), $additionalProperties = array())
     {
         $constructorDefaults = array('message' => null, 'code' => null, 'previous' => null);
         $constructorArguments = array_merge($constructorDefaults, $constructorArguments);
@@ -90,8 +101,10 @@ class AbstractException extends \Exception
      *
      * @throws MissingExceptionMessageException
      */
-    protected static function getDefaultMessage(array $additionalProperties)
-    {
+    protected static function getDefaultMessage(
+        /** @noinspection PhpUnusedParameterInspection */
+        array $additionalProperties
+    ) {
         throw MissingExceptionMessageException::build();
     }
 
@@ -140,5 +153,24 @@ class AbstractException extends \Exception
         }
 
         return $e;
+    }
+
+
+    /**
+     * Returns the Exception that is the root cause of one or more subsequent exceptions.
+     *
+     * @param \Exception $exception The exception of which to find a base exception.
+     *
+     * @return \Exception
+     *
+     * @see http://bit.ly/16bdp00 <= This is where I found this method
+     */
+    final public static function getBaseException(\Exception $exception)
+    {
+        while ($exception->getPrevious() !== null) {
+            $exception = $exception->getPrevious();
+        }
+
+        return $exception;
     }
 }
