@@ -26,7 +26,7 @@ class AbstractException extends \Exception
      * Pass in an array containing any or all of the following keys
      * - message (string)
      * - code (int)
-     * - precious (\Exception)
+     * - previous (\Exception)
      *
      * If you don't pass in a 'message' or a 'code' then the method will attempt to get these from the exception class
      * getDefaultMessage or getDefaultCode methods, respectively.
@@ -45,7 +45,7 @@ class AbstractException extends \Exception
      */
     public static function build(array $constructorArguments = array())
     {
-        $constructorDefaults = ['message' => null, 'code' => null, 'previous' => null];
+        $constructorDefaults = array('message' => null, 'code' => null, 'previous' => null);
         $constructorArguments = array_merge($constructorDefaults, $constructorArguments);
 
         $message = self::prepareMessage($constructorArguments['message']);
@@ -89,7 +89,7 @@ class AbstractException extends \Exception
 
 
     /**
-     * @param int    $code  Code passed in to build()
+     * @param int $code Code passed in to build()
      *
      * @return int
      */

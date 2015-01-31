@@ -47,7 +47,7 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
     {
         $message = 'testBuildWithNoDefaultsOnlyMessage message';
 
-        $builtException = ExtendedWithoutDefaultsException::build(['message' => $message]);
+        $builtException = ExtendedWithoutDefaultsException::build(array('message' => $message));
 
         $this->assertNotEmpty($builtException);
         $this->assertInstanceOf(get_class(new ExtendedWithoutDefaultsException), $builtException);
@@ -65,7 +65,7 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $code = 1000;
 
         try {
-            ExtendedWithoutDefaultsException::build(['code' => $code]);
+            ExtendedWithoutDefaultsException::build(array('code' => $code));
         } catch (MissingExceptionMessageException $thrownException) {
         }
 
@@ -84,7 +84,7 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $previous = new PreviousException;
 
         try {
-            ExtendedWithoutDefaultsException::build(['previous' => $previous]);
+            ExtendedWithoutDefaultsException::build(array('previous' => $previous));
         } catch (MissingExceptionMessageException $thrownException) {
         }
 
@@ -103,7 +103,7 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $message = 'testBuildWithNoDefaultsOnlyMessage message';
         $code = 1000;
 
-        $builtException = ExtendedWithoutDefaultsException::build(['message' => $message, 'code' => $code]);
+        $builtException = ExtendedWithoutDefaultsException::build(array('message' => $message, 'code' => $code));
 
         $this->assertNotEmpty($builtException);
         $this->assertInstanceOf(get_class(new ExtendedWithoutDefaultsException), $builtException);
@@ -121,7 +121,10 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $message = 'testBuildWithNoDefaultsOnlyMessage message';
         $previous = new PreviousException;
 
-        $builtException = ExtendedWithoutDefaultsException::build(['message' => $message, 'previous' => $previous]);
+        $builtException = ExtendedWithoutDefaultsException::build(array(
+            'message'  => $message,
+            'previous' => $previous
+        ));
 
         $this->assertNotEmpty($builtException);
         $this->assertInstanceOf(get_class(new ExtendedWithoutDefaultsException), $builtException);
@@ -140,7 +143,7 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $code = 1000;
 
         try {
-            ExtendedWithoutDefaultsException::build(['code' => $code, 'previous' => $previous]);
+            ExtendedWithoutDefaultsException::build(array('code' => $code, 'previous' => $previous));
         } catch (MissingExceptionMessageException $thrownException) {
         }
 
@@ -162,11 +165,11 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
         $code = 1000;
         $previous = new PreviousException;
 
-        $builtException = ExtendedWithoutDefaultsException::build([
+        $builtException = ExtendedWithoutDefaultsException::build(array(
             'message'  => $message,
             'code'     => $code,
-            'previous' => $previous
-        ]);
+            'previous' => $previous,
+        ));
 
         $this->assertNotEmpty($builtException);
         $this->assertInstanceOf(get_class(new ExtendedWithoutDefaultsException), $builtException);
