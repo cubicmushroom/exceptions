@@ -17,9 +17,12 @@ class MissingExceptionMessageException extends AbstractException
 
     /**
      * Returns the message to use if not message is provided to build() method
+     *
+     * @param array $additionalProperties Additional properties passed to the build() method
+     *
      * @return string
      */
-    protected static function getDefaultMessage()
+    protected static function getDefaultMessage(array $additionalProperties)
     {
         return self::DEFAULT_MESSAGE;
     }

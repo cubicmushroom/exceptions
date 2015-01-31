@@ -9,6 +9,7 @@
 namespace CubicMushroom\Exceptions;
 
 use CubicMushroom\Exceptions\Exception\Defaults\MissingExceptionMessageException;
+use CubicMushroom\Exceptions\Exception\Property\SetterNotFoundException;
 
 /**
  * Class AbstractException
@@ -36,23 +37,28 @@ class AbstractException extends \Exception
      *
      * If no code if prepared, then 500 is used
      *
-     * @param $constructorArguments
+     * @param array $constructorArguments [optional] Arguments to be passed to the constructor
+     * @param array $additionalProperties [optional] Additional p
      *
      * @return static
      *
      * @throws \RuntimeException if no message can be prepared... There's no excuse for not including a useful message!
      *
      */
-    public static function build(array $constructorArguments = array())
+    public static function build(array $constructorArguments = array(), $additionalProperties = array())
     {
         $constructorDefaults = array('message' => null, 'code' => null, 'previous' => null);
         $constructorArguments = array_merge($constructorDefaults, $constructorArguments);
 
-        $message = self::prepareMessage($constructorArguments['message']);
+        $message = self::prepareMessage($constructorArguments['message'], $additionalProperties);
         $code = self::prepareCode($constructorArguments['code']);
         $previous = $constructorArguments['previous'];
 
-        return new static($message, $code, $previous);
+        $e = new static($message, $code, $previous);
+
+        $e = self::addAdditionalProperties($e, $additionalProperties);
+
+        return $e;
     }
 
 
@@ -60,16 +66,16 @@ class AbstractException extends \Exception
      * Prepares the message from either its passed value, or the class' default message, accessed via it's
      * getDefaultMessage(), if it exists
      *
-     * @param string $message Message passed in to build()
+     * @param string $message              Message passed in to build()
+     * @param array  $additionalProperties Additional properties passed to the build() method
      *
      * @return string
-     *
-     * @throws \RuntimeException if no message can be prepared
+     * @throws MissingExceptionMessageException
      */
-    protected static function prepareMessage($message)
+    protected static function prepareMessage($message, $additionalProperties)
     {
         if (empty($message)) {
-            $message = static::getDefaultMessage();
+            $message = static::getDefaultMessage($additionalProperties);
         }
 
         return $message;
@@ -77,12 +83,14 @@ class AbstractException extends \Exception
 
 
     /**
+     * @param array $additionalProperties Additional properties passed to the build() method
+     *
      * @return string Should return a string on child classes.  This class throws an exception, as there is no default
      *                message for the abstract class
      *
      * @throws MissingExceptionMessageException
      */
-    protected static function getDefaultMessage()
+    protected static function getDefaultMessage(array $additionalProperties)
     {
         throw MissingExceptionMessageException::build();
     }
@@ -109,5 +117,28 @@ class AbstractException extends \Exception
     protected static function getDefaultCode()
     {
         return 500;
+    }
+
+
+    /**
+     * @param AbstractException $e    Newly created exception
+     * @param array             $args Arguments passed to build to be added (see noted on build() method)
+     *
+     * @return static
+     *
+     * @throws SetterNotFoundException of
+     */
+    protected static function addAdditionalProperties(AbstractException $e, $args)
+    {
+        foreach ($args as $property => $value) {
+            $setter = 'set' . ucfirst($property);
+            if (!is_callable([$e, $setter])) {
+                throw SetterNotFoundException::build(array(), array('property' => $property));
+            }
+
+            $e->$setter($value);
+        }
+
+        return $e;
     }
 }
