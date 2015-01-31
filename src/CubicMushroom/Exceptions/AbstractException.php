@@ -20,18 +20,6 @@ use CubicMushroom\Exceptions\Exception\Property\SetterNotFoundException;
  */
 class AbstractException extends \Exception
 {
-
-    /**
-     * Builds an exception using build() and then throws it
-     *
-     * @throws AbstractException
-     */
-    final public static function raise(array $constructorArguments = array(), $additionalProperties = array())
-    {
-        throw self::build($constructorArguments, $additionalProperties);
-    }
-
-
     /**
      * Helper method to prepare all but the most complex exceptions
      *
