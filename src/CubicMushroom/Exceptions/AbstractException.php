@@ -44,7 +44,7 @@ class AbstractException extends \Exception
      * @throws \RuntimeException if no message can be prepared... There's no excuse for not including a useful message!
      *
      */
-    final public static function build(array $constructorArguments = array(), $additionalProperties = array())
+    public static function build(array $constructorArguments = array(), $additionalProperties = array())
     {
         $constructorDefaults = array('message' => null, 'code' => null, 'previous' => null);
         $constructorArguments = array_merge($constructorDefaults, $constructorArguments);
