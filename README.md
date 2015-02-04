@@ -29,4 +29,5 @@ properties on the build exception using the setter for the property.  If the set
 Roadmap
 -------
 
-1. Stuff, as I think of it
+1. Add way of defining required additional parameters
+2. More stuff, as I think of it
