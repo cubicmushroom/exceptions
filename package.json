@@ -1,6 +1,6 @@
 {
   "name": "exceptions",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A basic, abstract PHP exceptions class",
   "main": "gulpfile.js",
   "directories": {
