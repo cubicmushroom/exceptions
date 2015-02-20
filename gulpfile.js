@@ -9,10 +9,11 @@ var gulp        = require('gulp'),
     tag_version = require('gulp-tag-version'),
     watch       = require('gulp-watch');
 
-var srcFilePattern         = './src/**/*.php',
-    unitTestPattern        = './tests/unit/**/*.php',
-    testSupportFilePattern = './tests/_support/**/*.php',
-    versionFilePattern     = ['./composer.json', './package.json'];
+var srcFilePattern              = './src/**/*.php',
+    unitTestPattern             = './tests/unit/**/*.php',
+    testSupportFilePattern      = './tests/_support/**/*.php',
+    changelogSupportFilePattern = './CHANGELOG',
+    versionFilePattern          = ['./composer.json', './package.json'];
 
 
 gulp.task('clear', shell.task(
@@ -72,13 +73,6 @@ gulp.task('watch:cc:unit', ['cc:unit'], function () {
 function incrementVersion(importance) {
     // get all the files to bump version in
     return gulp.src(versionFilePattern)
-        // Confirm ready
-        .pipe(confirm({
-            question  : 'Have you updated the CHANGELOG?',
-            "continue": function (answer) {
-                return answer.toLowerCase() === 'y';
-            }
-        }))
         // bump the version number in those files
         .pipe(bump({type: importance}))
         // save it back to filesystem
@@ -91,12 +85,25 @@ function incrementVersion(importance) {
         .pipe(tag_version());
 }
 
-gulp.task('version:patch', function () {
+gulp.task('confirm:changelog', function () {
+    return gulp.src(versionFilePattern)
+        .pipe(confirm({
+            question  : 'Have you updated the CHANGELOG?',
+            "continue": function (answer) {
+                return answer.toLowerCase() === 'y';
+            }
+        }));
+});
+gulp.task('commit:changelog', function () {
+    return gulp.src(changelogSupportFilePattern)
+        .pipe(git.commit('Updating CHANGELOG'));
+});
+gulp.task('version:patch', ['confirm:changelog'], function () {
     return incrementVersion('patch');
 });
-gulp.task('version:feature', function () {
+gulp.task('version:feature', ['confirm:changelog'], function () {
     return incrementVersion('minor');
 });
-gulp.task('version:release', function () {
+gulp.task('version:release', ['confirm:changelog'], function () {
     return incrementVersion('major');
 });
