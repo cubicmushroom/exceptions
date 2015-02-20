@@ -1,9 +1,7 @@
 {
     "name": "cubicmushroom/exceptions",
+    "version": "1.0.3",
     "description": "A basic, abstract exceptions class",
-    "require-dev": {
-        "codeception/codeception": "~2.0"
-    },
     "license": "MIT",
     "authors": [
         {
@@ -14,6 +12,9 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">= 5.4"
+    },
+    "require-dev": {
+        "codeception/codeception": "~2.0"
     },
     "autoload": {
         "psr-4": {
