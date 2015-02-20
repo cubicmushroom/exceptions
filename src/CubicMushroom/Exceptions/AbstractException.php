@@ -46,11 +46,11 @@ abstract class AbstractException extends \Exception
      */
     public static function build(array $constructorArguments = array(), $additionalProperties = array())
     {
-        $constructorDefaults = array('message' => null, 'code' => null, 'previous' => null);
+        $constructorDefaults  = array('message' => null, 'code' => null, 'previous' => null);
         $constructorArguments = array_merge($constructorDefaults, $constructorArguments);
 
-        $message = self::prepareMessage($constructorArguments['message'], $additionalProperties);
-        $code = self::prepareCode($constructorArguments['code']);
+        $message  = self::prepareMessage($constructorArguments['message'], $additionalProperties);
+        $code     = self::prepareCode($constructorArguments['code']);
         $previous = $constructorArguments['previous'];
 
         $e = new static($message, $code, $previous);
@@ -129,7 +129,7 @@ abstract class AbstractException extends \Exception
         foreach ($args as $property => $value) {
             $setter = 'set' . ucfirst($property);
             if (!is_callable([$e, $setter])) {
-                throw SetterNotFoundException::build(array(), array('property' => $property));
+                throw SetterNotFoundException::build(array(), array('class' => get_class($e), 'property' => $property));
             }
 
             $e->$setter($value);
