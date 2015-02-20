@@ -98,12 +98,12 @@ gulp.task('commit:changelog', function () {
     return gulp.src(changelogSupportFilePattern)
         .pipe(git.commit('Updating CHANGELOG'));
 });
-gulp.task('version:patch', ['confirm:changelog'], function () {
+gulp.task('version:patch', ['confirm:changelog', 'commit:changelog'], function () {
     return incrementVersion('patch');
 });
-gulp.task('version:feature', ['confirm:changelog'], function () {
+gulp.task('version:feature', ['confirm:changelog', 'commit:changelog'], function () {
     return incrementVersion('minor');
 });
-gulp.task('version:release', ['confirm:changelog'], function () {
+gulp.task('version:release', ['confirm:changelog', 'commit:changelog'], function () {
     return incrementVersion('major');
 });
