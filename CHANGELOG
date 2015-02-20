@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [unreleased] - unreleased
+## [v1.0.4] - 2015-02-20
 ### Changed
 - Made AbstractException::getDefaultMessage() abstract
 
