@@ -1,10 +1,12 @@
-var gulp     = require('gulp'),
-    bump     = require('gulp-bump'),
-    codecept = require('gulp-codeception'),
-    git      = require('gulp-git'),
-    notify   = require('gulp-notify'),
-    shell    = require('gulp-shell'),
-    watch    = require('gulp-watch');
+var gulp        = require('gulp'),
+    bump        = require('gulp-bump'),
+    codecept    = require('gulp-codeception'),
+    confirm     = require('gulp-confirm'),
+    git         = require('gulp-git'),
+    notify      = require('gulp-notify'),
+    shell       = require('gulp-shell'),
+    tag_version = require('gulp-tag-version'),
+    watch       = require('gulp-watch');
 
 var srcFilePattern         = './src/**/*.php',
     unitTestPattern        = './tests/unit/**/*.php',
@@ -69,17 +71,23 @@ gulp.task('watch:cc:unit', ['cc:unit'], function () {
 function incrementVersion(importance) {
     // get all the files to bump version in
     return gulp.src(versionFilePattern)
+        // Confirm ready
+        .pipe(confirm({
+            question: 'Have you updated the CHANGELOG?',
+            "continue": function(answer) {
+                return answer.toLowerCase() === 'y';
+            }
+        }))
         // bump the version number in those files
         .pipe(bump({type: importance}))
         // save it back to filesystem
         .pipe(gulp.dest('./'))
         // commit the changed version number
         .pipe(git.commit('Released updated version'))
-
         // read only one file to get the version number
-        .pipe(filter('package.json'));
+        .pipe(filter('package.json'))
         // **tag it in the repository**
-        //.pipe(tag_version());
+        .pipe(tag_version());
 }
 
 gulp.task('version:patch', function () {
