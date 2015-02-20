@@ -14,6 +14,11 @@ class SetterNotFoundException extends AbstractException
 {
 
     /**
+     * @var string
+     */
+    protected $class;
+
+    /**
      * Name of the property for which the setter is missing
      *
      * @var string
@@ -28,7 +33,8 @@ class SetterNotFoundException extends AbstractException
      */
     protected static function getDefaultMessage(array $additionalProperties)
     {
-        return "Setter for property  for '{$additionalProperties['property']}' not found";
+        return "Setter for property  for {$additionalProperties['class']}::{$additionalProperties['property']}() not " .
+               "found";
     }
 
 
@@ -41,9 +47,27 @@ class SetterNotFoundException extends AbstractException
     }
 
 
-    // ---
+    // -----------------------------------------------------------------------------------------------------------------
     // Getters and Setters
-    // ---
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+
+    /**
+     * @param string $class
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
+    }
+
 
     /**
      * @return string
