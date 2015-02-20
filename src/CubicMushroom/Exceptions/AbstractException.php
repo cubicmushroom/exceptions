@@ -18,7 +18,7 @@ use CubicMushroom\Exceptions\Exception\Property\SetterNotFoundException;
  *
  * @package CubicMushroom\Exceptions
  */
-abstract class AbstractException extends \Exception
+class AbstractException extends \Exception
 {
     /**
      * Helper method to prepare all but the most complex exceptions
@@ -89,7 +89,12 @@ abstract class AbstractException extends \Exception
      *
      * @throws MissingExceptionMessageException
      */
-    abstract protected static function getDefaultMessage(array $additionalProperties);
+    protected static function getDefaultMessage(
+        /** @noinspection PhpUnusedParameterInspection */
+        array $additionalProperties
+    ) {
+        throw MissingExceptionMessageException::build();
+    }
 
 
     /**
