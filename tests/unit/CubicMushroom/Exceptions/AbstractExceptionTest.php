@@ -335,7 +335,7 @@ class AbstractExceptionTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \CubicMushroom\Exceptions\Exception\Property\SetterNotFoundException
      * @expectedExceptionCode 500
-     * @expectedExceptionMessage Setter for property  for 'doesNotExist' not found
+     * @expectedExceptionMessage Setter for property for CubicMushroom\Exceptions\ExtendedAdditionalPropertiesException::doesNotExist not found
      */
     public function testInvalidAdditionalArguments()
     {

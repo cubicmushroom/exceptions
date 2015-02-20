@@ -134,7 +134,7 @@ class AbstractException extends \Exception
         foreach ($args as $property => $value) {
             $setter = 'set' . ucfirst($property);
             if (!is_callable([$e, $setter])) {
-                throw SetterNotFoundException::build(array(), array('property' => $property));
+                throw SetterNotFoundException::build(array(), array('class' => get_class($e), 'property' => $property));
             }
 
             $e->$setter($value);

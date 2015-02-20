@@ -33,7 +33,7 @@ class SetterNotFoundException extends AbstractException
      */
     protected static function getDefaultMessage(array $additionalProperties)
     {
-        return "Setter for property  for {$additionalProperties['class']}::{$additionalProperties['property']}() not " .
+        return "Setter for property for {$additionalProperties['class']}::{$additionalProperties['property']} not " .
                "found";
     }
 
