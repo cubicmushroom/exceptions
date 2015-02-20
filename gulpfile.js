@@ -2,6 +2,7 @@ var gulp        = require('gulp'),
     bump        = require('gulp-bump'),
     codecept    = require('gulp-codeception'),
     confirm     = require('gulp-confirm'),
+    filter      = require('gulp-filter'),
     git         = require('gulp-git'),
     notify      = require('gulp-notify'),
     shell       = require('gulp-shell'),
@@ -73,8 +74,8 @@ function incrementVersion(importance) {
     return gulp.src(versionFilePattern)
         // Confirm ready
         .pipe(confirm({
-            question: 'Have you updated the CHANGELOG?',
-            "continue": function(answer) {
+            question  : 'Have you updated the CHANGELOG?',
+            "continue": function (answer) {
                 return answer.toLowerCase() === 'y';
             }
         }))
