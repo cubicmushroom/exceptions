@@ -1,6 +1,6 @@
 {
     "name": "cubicmushroom/exceptions",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A basic, abstract exceptions class",
     "license": "MIT",
     "authors": [
